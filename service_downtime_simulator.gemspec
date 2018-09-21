@@ -6,10 +6,10 @@ Gem::Specification.new do |spec|
   spec.name          = 'service_downtime_simulator'
   spec.version       = ServiceDowntimeSimulator::VERSION
   spec.authors       = ['Josh McMillan']
-  spec.email         = ['josh@joshmcmillan.co.uk']
+  spec.email         = ['joshua.mcmillan@deliveroo.co.uk']
 
   spec.summary       = "Want to know what it's like to have me in your dev team? This gem is for you!"
-  spec.homepage      = 'https://github.com/mcmillan/service_downtime_simulator'
+  spec.homepage      = 'https://github.com/deliveroo/service_downtime_simulator'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
