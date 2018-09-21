@@ -6,9 +6,7 @@ module ShittyDeveloperSimulator
     end
 
     def call(env)
-      if !config.activated?
-        return app.call(env)
-      end
+      return app.call(env) unless config.activated?
 
       config.mode_klass.new(app).call(env)
     end

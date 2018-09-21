@@ -6,4 +6,7 @@ publish:
 	-bundle exec gem push *.gem
 	rm *.gem
 
-.PHONY: publish
+lint:
+	bundle exec rubocop
+
+.PHONY: test publish lint

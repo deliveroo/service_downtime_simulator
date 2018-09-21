@@ -2,11 +2,13 @@ module ShittyDeveloperSimulator
   class Config
     WonkyInputError = Class.new(StandardError)
 
-    OPTIONS = %i(
+    OPTIONS = %i[
       enabled
       mode
       logger
-    ).freeze
+    ].freeze
+
+    attr_reader :logger
 
     def self.for(config)
       return config if config.is_a?(self)
@@ -27,11 +29,7 @@ module ShittyDeveloperSimulator
     end
 
     def enabled
-      !!@enabled
-    end
-
-    def logger
-      @logger
+      @enabled == true
     end
 
     def mode
@@ -40,12 +38,12 @@ module ShittyDeveloperSimulator
         return nil
       end
 
-      if !@mode.is_a?(Symbol)
+      unless @mode.is_a?(Symbol)
         moan(:mode, 'Mode must be a symbol')
         return nil
       end
 
-      if !ShittyDeveloperSimulator::Modes.exists?(@mode)
+      unless ShittyDeveloperSimulator::Modes.exists?(@mode)
         moan(:mode, "Unknown mode #{@mode}")
         return nil
       end
@@ -61,6 +59,7 @@ module ShittyDeveloperSimulator
 
     def moan(option, message)
       return unless logger.respond_to?(:error)
+
       logger.error("[SDS] Issue with #{option}: #{message}. Will not activate unless fixed.")
     end
   end

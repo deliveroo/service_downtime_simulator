@@ -12,7 +12,7 @@ module ShittyDeveloperSimulator
       end
 
       def cheeseboard
-        %w(stilton caerphilly cheddar gloucester wensleydale brie) * 10
+        %w[stilton caerphilly cheddar gloucester wensleydale brie] * 10
       end
     end
   end

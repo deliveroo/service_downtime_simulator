@@ -1,0 +1,16 @@
+# 80 char line length is not enough chars. 120 is better. We're not working on 1024x768 CRTs.
+Metrics/LineLength:
+  Max: 120
+
+# Documentation is for nerds.
+Style/Documentation:
+  Enabled: false
+
+# I like my code verbose and spaced out.
+Metrics/MethodLength:
+  Max: 20
+
+# Because RSpec tests are block-centric, this is an insane linter to run on them.
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/*

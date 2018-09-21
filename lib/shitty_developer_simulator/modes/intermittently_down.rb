@@ -2,9 +2,7 @@ module ShittyDeveloperSimulator
   module Modes
     class IntermittentlyDown
       def call(env)
-        unless knackered?
-          return app.call(env)
-        end
+        return app.call(env) unless knackered?
 
         super
       end

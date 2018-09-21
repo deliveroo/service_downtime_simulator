@@ -66,5 +66,4 @@ RSpec.describe ShittyDeveloperSimulator::Config do
 
     context 'with an invalid mode'
   end
-
 end
