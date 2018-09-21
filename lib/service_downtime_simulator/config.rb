@@ -1,4 +1,4 @@
-module ShittyDeveloperSimulator
+module ServiceDowntimeSimulator
   class Config
     WonkyInputError = Class.new(StandardError)
 
@@ -43,7 +43,7 @@ module ShittyDeveloperSimulator
         return nil
       end
 
-      unless ShittyDeveloperSimulator::Modes.exists?(@mode)
+      unless ServiceDowntimeSimulator::Modes.exists?(@mode)
         moan(:mode, "Unknown mode #{@mode}")
         return nil
       end
@@ -52,7 +52,7 @@ module ShittyDeveloperSimulator
     end
 
     def mode_klass
-      ShittyDeveloperSimulator::Modes.for(mode)
+      ServiceDowntimeSimulator::Modes.for(mode)
     end
 
     private

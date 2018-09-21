@@ -10,7 +10,7 @@ Add the following in `application.rb`:
 
 ```ruby
 config.middleware.use(
-  ShittyDeveloperSimulator::Middleware,
+  ServiceDowntimeSimulator::Middleware,
   config # See below for info about how to configure this
 )
 ```
@@ -56,7 +56,7 @@ This example will always return a 500 for all requests.
 
 ```ruby
 config.middleware.use(
-  ShittyDeveloperSimulator::Middleware,
+  ServiceDowntimeSimulator::Middleware,
   {
     enabled: true,
     mode: :hard_down,
@@ -71,7 +71,7 @@ This is a more practical example, allowing failure simulation to happen based on
 
 ```ruby
 config.middleware.use(
-  ShittyDeveloperSimulator::Middleware,
+  ServiceDowntimeSimulator::Middleware,
   {
     enabled: ENV['FAILURE_SIMULATION_ENABLED'] == 'I_UNDERSTAND_THE_CONSEQUENCES_OF_THIS',
     mode: ENV['FAILURE_SIMULATION_MODE'],

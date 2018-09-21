@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ShittyDeveloperSimulator::Middleware do
+RSpec.describe ServiceDowntimeSimulator::Middleware do
   describe '#initialize' do
     it 'needs tests'
   end

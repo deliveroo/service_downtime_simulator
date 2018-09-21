@@ -1,4 +1,4 @@
-module ShittyDeveloperSimulator
+module ServiceDowntimeSimulator
   module Modes
     class IntermittentlyDown < Base
       def call(env)

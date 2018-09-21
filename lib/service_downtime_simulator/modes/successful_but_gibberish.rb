@@ -1,4 +1,4 @@
-module ShittyDeveloperSimulator
+module ServiceDowntimeSimulator
   module Modes
     class SuccessfulButGibberish < Base
       private

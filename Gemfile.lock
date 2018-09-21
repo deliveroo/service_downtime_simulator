@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    shitty_developer_simulator (0.1.0)
+    service_downtime_simulator (0.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -45,7 +45,7 @@ DEPENDENCIES
   bundler (~> 1.16)
   rspec (~> 3.0)
   rubocop
-  shitty_developer_simulator!
+  service_downtime_simulator!
 
 BUNDLED WITH
    1.16.1

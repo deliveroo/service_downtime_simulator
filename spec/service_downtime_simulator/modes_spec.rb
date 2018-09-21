@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ShittyDeveloperSimulator::Modes do
+RSpec.describe ServiceDowntimeSimulator::Modes do
   let(:valid_mode) { :hard_down }
   let(:invalid_mode) { :the_undertaker }
 
@@ -11,7 +11,7 @@ RSpec.describe ShittyDeveloperSimulator::Modes do
       let(:mode) { valid_mode }
 
       it 'returns the class associated with that mode' do
-        expect(subject).to be(ShittyDeveloperSimulator::Modes::HardDown)
+        expect(subject).to be(ServiceDowntimeSimulator::Modes::HardDown)
       end
     end
 
@@ -19,7 +19,7 @@ RSpec.describe ShittyDeveloperSimulator::Modes do
       let(:mode) { invalid_mode }
 
       it 'raises an exception' do
-        expect { subject }.to raise_error(ShittyDeveloperSimulator::Modes::NotFound)
+        expect { subject }.to raise_error(ServiceDowntimeSimulator::Modes::NotFound)
       end
     end
   end

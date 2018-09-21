@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe ShittyDeveloperSimulator::Config do
+RSpec.describe ServiceDowntimeSimulator::Config do
   let(:enabled) { true }
   let(:mode) { nil }
   let(:logger) { double(error: nil) }
@@ -35,7 +35,7 @@ RSpec.describe ShittyDeveloperSimulator::Config do
       let(:params) { 'john torode' }
 
       it 'raises an exception' do
-        expect { subject }.to raise_error(ShittyDeveloperSimulator::Config::WonkyInputError)
+        expect { subject }.to raise_error(ServiceDowntimeSimulator::Config::WonkyInputError)
       end
     end
   end
@@ -43,7 +43,7 @@ RSpec.describe ShittyDeveloperSimulator::Config do
   describe '#initialize' do
     context 'with a hash' do
       it 'returns an instance' do
-        expect(subject).to be_an_instance_of(ShittyDeveloperSimulator::Config)
+        expect(subject).to be_an_instance_of(ServiceDowntimeSimulator::Config)
       end
     end
 
@@ -51,7 +51,7 @@ RSpec.describe ShittyDeveloperSimulator::Config do
       let(:params) { 'gregg wallace' }
 
       it 'raises an exception' do
-        expect { subject }.to raise_error(ShittyDeveloperSimulator::Config::WonkyInputError)
+        expect { subject }.to raise_error(ServiceDowntimeSimulator::Config::WonkyInputError)
       end
     end
   end
@@ -98,7 +98,7 @@ RSpec.describe ShittyDeveloperSimulator::Config do
 
       describe '#mode_klass' do
         it 'returns the relevant mode implementation class' do
-          expect(subject.mode_klass).to eq(ShittyDeveloperSimulator::Modes::HardDown)
+          expect(subject.mode_klass).to eq(ServiceDowntimeSimulator::Modes::HardDown)
         end
       end
     end

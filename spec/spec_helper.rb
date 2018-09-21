@@ -1,5 +1,5 @@
 require 'bundler/setup'
-require 'shitty_developer_simulator'
+require 'service_downtime_simulator'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

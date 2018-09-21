@@ -1,8 +1,8 @@
-module ShittyDeveloperSimulator
+module ServiceDowntimeSimulator
   class Middleware
     def initialize(app, config)
       @app = app
-      @config = ShittyDeveloperSimulator::Config.from(config)
+      @config = ServiceDowntimeSimulator::Config.from(config)
     end
 
     def call(env)

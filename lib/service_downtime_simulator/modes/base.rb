@@ -1,4 +1,4 @@
-module ShittyDeveloperSimulator
+module ServiceDowntimeSimulator
   module Modes
     class Base
       def initialize(app)
