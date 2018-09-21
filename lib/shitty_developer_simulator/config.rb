@@ -1,61 +1,67 @@
-class ShittyDeveloperSimulator::Config
-  OPTIONS = %i(
-    enabled
-    mode
-    logger
-  ).freeze
+module ShittyDeveloperSimulator
+  class Config
+    WonkyInputError = Class.new(StandardError)
 
-  def self.from(config)
-    return config if config.is_a?(self)
+    OPTIONS = %i(
+      enabled
+      mode
+      logger
+    ).freeze
 
-    new(config)
-  end
+    def self.for(config)
+      return config if config.is_a?(self)
 
-  def initialize(config_hash)
-    config_hash.each do |key, value|
-      instance_variable_set("@#{key}", value)
-    end
-  end
-
-  def activated?
-    enabled == true && !mode.nil?
-  end
-
-  def enabled
-    !!@enabled
-  end
-
-  def logger
-    @logger
-  end
-
-  def mode
-    if @mode.nil? || @mode.empty?
-      moan(:mode, 'No mode provided')
-      return nil
+      new(config)
     end
 
-    if !@mode.is_a?(Symbol)
-      moan(:mode, 'Mode must be a symbol')
-      return nil
+    def initialize(config_hash)
+      raise WonkyInputError, 'Not a hash' unless config_hash.is_a?(Hash)
+
+      config_hash.each do |key, value|
+        instance_variable_set("@#{key}", value)
+      end
     end
 
-    if !ShittyDeveloperSimulator::Modes.exists?(@mode)
-      moan(:mode, "Unknown mode #{@mode}")
-      return nil
+    def activated?
+      enabled == true && !mode.nil?
     end
 
-    @mode
-  end
+    def enabled
+      !!@enabled
+    end
 
-  def mode_klass
-    ShittyDeveloperSimulator::Modes.for(mode)
-  end
+    def logger
+      @logger
+    end
 
-  private
+    def mode
+      if @mode.nil? || @mode.empty?
+        moan(:mode, 'No mode provided')
+        return nil
+      end
 
-  def moan(option, message)
-    return unless logger.respond_to?(:error)
-    logger.error("[SDS] Issue with #{option}: #{message}. Will not activate unless fixed.")
+      if !@mode.is_a?(Symbol)
+        moan(:mode, 'Mode must be a symbol')
+        return nil
+      end
+
+      if !ShittyDeveloperSimulator::Modes.exists?(@mode)
+        moan(:mode, "Unknown mode #{@mode}")
+        return nil
+      end
+
+      @mode
+    end
+
+    def mode_klass
+      ShittyDeveloperSimulator::Modes.for(mode)
+    end
+
+    private
+
+    def moan(option, message)
+      return unless logger.respond_to?(:error)
+      logger.error("[SDS] Issue with #{option}: #{message}. Will not activate unless fixed.")
+    end
   end
 end

@@ -1,12 +1,16 @@
-class ShittyDeveloperSimulator::Modes::TimingOut < ShittyDeveloperSimulator::Modes::Base
-  def call(*)
-    sleep(15)
-    super
-  end
+module ShittyDeveloperSimulator
+  module Modes
+    class TimingOut
+      def call(*)
+        sleep(15)
+        super
+      end
 
-  private
+      private
 
-  def status
-    503
+      def status
+        503
+      end
+    end
   end
 end

@@ -1,7 +1,11 @@
-class ShittyDeveloperSimulator::Modes::HardDown < ShittyDeveloperSimulator::Modes::Base
-  private
+module ShittyDeveloperSimulator
+  module Modes
+    class HardDown < Base
+      private
 
-  def status
-    500
+      def status
+        500
+      end
+    end
   end
 end
