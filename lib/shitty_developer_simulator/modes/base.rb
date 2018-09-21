@@ -15,16 +15,20 @@ module ShittyDeveloperSimulator
 
       def headers
         {
-          'X-SDS-Mode' => name
+          'X-SDS-Mode' => identifier
         }
       end
 
       def body
-        "Simulated Response (#{name})"
+        "Simulated Response (#{identifier})"
       end
 
       def status
         raise NotImplementedError
+      end
+
+      def identifier
+        self.class.name
       end
 
       attr_reader :app, :env

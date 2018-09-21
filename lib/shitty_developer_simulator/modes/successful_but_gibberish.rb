@@ -1,6 +1,6 @@
 module ShittyDeveloperSimulator
   module Modes
-    class SuccessfulButGibberish
+    class SuccessfulButGibberish < Base
       private
 
       def status

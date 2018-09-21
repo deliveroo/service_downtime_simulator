@@ -1,6 +1,6 @@
 module ShittyDeveloperSimulator
   module Modes
-    class IntermittentlyDown
+    class IntermittentlyDown < Base
       def call(env)
         return app.call(env) unless knackered?
 

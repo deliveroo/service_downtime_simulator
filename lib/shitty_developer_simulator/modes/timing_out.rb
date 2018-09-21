@@ -1,9 +1,13 @@
 module ShittyDeveloperSimulator
   module Modes
-    class TimingOut
+    class TimingOut < Base
       def call(*)
-        sleep(15)
+        delay(15)
         super
+      end
+
+      def delay(duration)
+        sleep(duration)
       end
 
       private
