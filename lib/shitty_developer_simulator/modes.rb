@@ -12,7 +12,7 @@ module ShittyDeveloperSimulator
     def self.for(id)
       raise NotFound unless exists?(id)
 
-      AVAILABLE[key]
+      AVAILABLE[id]
     end
 
     def self.exists?(id)

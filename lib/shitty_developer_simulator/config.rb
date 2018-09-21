@@ -17,7 +17,7 @@ module ShittyDeveloperSimulator
     end
 
     def initialize(config_hash)
-      raise WonkyInputError, 'Not a hash' unless config_hash.is_a?(Hash)
+      raise WonkyInputError unless config_hash.is_a?(Hash)
 
       config_hash.each do |key, value|
         instance_variable_set("@#{key}", value)
