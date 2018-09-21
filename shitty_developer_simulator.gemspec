@@ -1,6 +1,6 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'shitty_developer_simulator/version'
+require 'shitty_developer_simulator'
 
 Gem::Specification.new do |spec|
   spec.name          = 'shitty_developer_simulator'
