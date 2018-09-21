@@ -2,7 +2,7 @@ module ServiceDowntimeSimulator
   class Middleware
     def initialize(app, config)
       @app = app
-      @config = ServiceDowntimeSimulator::Config.from(config)
+      @config = ServiceDowntimeSimulator::Config.for(config)
     end
 
     def call(env)
