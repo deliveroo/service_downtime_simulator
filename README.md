@@ -99,3 +99,12 @@ config.middleware.use(
 - `make lint` to lint your code
 - ???
 - Profit
+
+## Gem Publishing
+
+TBC, but very manual and involved flow is:
+
+- Update version in `lib/service_downtime_simulator.rb` and commit
+- Tag version via `git tag XXX`
+- Push (`git push origin head --tags`)
+- Release to Rubygems (`make publish`)
