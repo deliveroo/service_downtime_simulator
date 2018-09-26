@@ -2,17 +2,19 @@ require 'spec_helper'
 
 RSpec.describe ServiceDowntimeSimulator::Config do
   let(:enabled) { true }
-  let(:mode) { nil }
+  let(:mode) { :brie }
+  let(:excluded_paths) { [] }
   let(:logger) { double(error: nil) }
   let(:params) do
     {
       enabled: enabled,
       mode: mode,
-      logger: logger
+      logger: logger,
+      excluded_paths: excluded_paths
     }
   end
 
-  subject { described_class.new(params) }
+  subject(:config) { described_class.new(params) }
 
   describe '.for' do
     subject { described_class.for(params) }
@@ -20,15 +22,11 @@ RSpec.describe ServiceDowntimeSimulator::Config do
     context 'when supplied a config instance' do
       let(:params) { described_class.new({}) }
 
-      it 'returns said config instance' do
-        expect(subject).to eq(params)
-      end
+      it { is_expected.to eq(params) }
     end
 
     context 'when supplied a hash' do
-      it 'returns a new config instance' do
-        expect(subject).to be_an_instance_of(described_class)
-      end
+      it { is_expected.to be_an_instance_of(described_class) }
     end
 
     context 'with anything else' do
@@ -42,9 +40,7 @@ RSpec.describe ServiceDowntimeSimulator::Config do
 
   describe '#initialize' do
     context 'with a hash' do
-      it 'returns an instance' do
-        expect(subject).to be_an_instance_of(ServiceDowntimeSimulator::Config)
-      end
+      it { is_expected.to be_an_instance_of(ServiceDowntimeSimulator::Config) }
     end
 
     context 'with anything else' do
@@ -56,88 +52,147 @@ RSpec.describe ServiceDowntimeSimulator::Config do
     end
   end
 
-  context 'with a falsey `enabled` option' do
-    let(:enabled) { false }
+  describe '#enabled' do
+    subject { config.enabled }
 
-    describe '#enabled' do
-      it 'returns false' do
-        expect(subject.enabled).to eq(false)
-      end
+    context 'when enabled' do
+      let(:enabled) { true }
+
+      it { is_expected.to eq(true) }
     end
 
-    describe '#activated?' do
-      it 'returns false' do
-        expect(subject.activated?).to eq(false)
-      end
+    context 'when disabled' do
+      let(:enabled) { false }
+
+      it { is_expected.to eq(false) }
     end
   end
 
-  context 'with a truthy `enabled` option' do
-    let(:enabled) { true }
+  describe '#activated?' do
+    subject { config.activated? }
 
-    describe '#enabled' do
-      it 'returns true' do
-        expect(subject.enabled).to eq(true)
+    context 'when enabled' do
+      let(:enabled) { true }
+
+      context 'with a valid mode' do
+        let(:mode) { :hard_down }
+
+        it { is_expected.to be(true) }
+      end
+
+      context 'with an invalid mode' do
+        let(:mode) { :bender_bending_rodriguez }
+
+        it { is_expected.to be(false) }
+      end
+
+      context 'without a mode' do
+        it { is_expected.to be(false) }
       end
     end
+
+    context 'when disabled' do
+      let(:enabled) { false }
+
+      it { is_expected.to be(false) }
+    end
+  end
+
+  describe '#mode' do
+    subject { config.mode }
+
+    context 'with a valid mode' do
+      before { allow(ServiceDowntimeSimulator::Modes).to receive(:exists?).and_return(true) }
+
+      it { is_expected.to eq(mode) }
+    end
+
+    context 'with an invalid mode' do
+      before { allow(ServiceDowntimeSimulator::Modes).to receive(:exists?).and_return(false) }
+
+      it 'logs an error' do
+        expect(logger).to receive(:error)
+        subject
+      end
+
+      it { is_expected.to eq(nil) }
+    end
+  end
+
+  describe '#mode_klass' do
+    subject { config.mode_klass }
 
     context 'with a valid mode' do
       let(:mode) { :hard_down }
 
-      describe '#activated?' do
-        it 'returns true' do
-          expect(subject.activated?).to eq(true)
-        end
-      end
-
-      describe '#mode' do
-        it 'returns the supplied mode' do
-          expect(subject.mode).to eq(mode)
-        end
-      end
-
-      describe '#mode_klass' do
-        it 'returns the relevant mode implementation class' do
-          expect(subject.mode_klass).to eq(ServiceDowntimeSimulator::Modes::HardDown)
-        end
-      end
+      it { is_expected.to eq(ServiceDowntimeSimulator::Modes::HardDown) }
     end
 
-    shared_examples_for 'an invalid mode' do
-      describe '#activated?' do
-        it 'returns false' do
-          expect(subject.activated?).to eq(false)
-        end
-      end
-
-      describe '#mode' do
-        it 'returns nil' do
-          expect(subject.mode).to eq(nil)
-        end
-
-        it 'logs an error' do
-          expect(logger).to receive(:error)
-          subject.mode
-        end
+    context 'otherwise' do
+      it 'blows up' do
+        expect { subject }.to raise_error(ServiceDowntimeSimulator::Modes::NotFound)
       end
     end
+  end
 
-    context 'with a nil mode' do
-      let(:mode) { nil }
+  describe '#excluded_paths' do
+    subject { config.excluded_paths }
 
-      it_behaves_like 'an invalid mode'
+    context 'with an array of strings' do
+      let(:excluded_paths) { %w[brie stilton] }
+
+      it { is_expected.to eq(excluded_paths) }
     end
 
-    context 'with an empty string mode' do
-      let(:mode) { '' }
+    context 'with an array of mixed types' do
+      let(:excluded_paths) { ['bananas', 1337] }
 
-      it_behaves_like 'an invalid mode'
+      it 'logs an error' do
+        expect(logger).to receive(:error)
+        subject
+      end
+
+      it { is_expected.to eq([]) }
     end
 
-    context 'with a non-existent mode' do
-      let(:mode) { :john_cena }
+    context 'with a non-array' do
+      let(:excluded_paths) { 'tony hawk pro skater 2 is the best game ever made, change my mind' }
 
-      it_behaves_like 'an invalid mode'
+      it 'logs an error' do
+        expect(logger).to receive(:error)
+        subject
+      end
+
+      it { is_expected.to eq([]) }
+    end
+
+    context 'with nil' do
+      let(:excluded_paths) { nil }
+
+      it 'logs an error' do
+        expect(logger).to receive(:error)
+        subject
+      end
+
+      it { is_expected.to eq([]) }
+    end
+  end
+
+  describe '#path_excluded?' do
+    let(:excluded_paths) { ['/ham'] }
+
+    subject { config.path_excluded?(path) }
+
+    context 'with a valid path' do
+      let(:path) { '/ham' }
+
+      it { is_expected.to be(true) }
+    end
+
+    context 'with an invalid path' do
+      let(:path) { '/cheese' }
+
+      it { is_expected.to be(false)}
     end
   end
 end

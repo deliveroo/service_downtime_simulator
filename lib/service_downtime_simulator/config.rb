@@ -6,6 +6,7 @@ module ServiceDowntimeSimulator
       enabled
       mode
       logger
+      excluded_paths
     ].freeze
 
     attr_reader :logger
@@ -33,7 +34,7 @@ module ServiceDowntimeSimulator
     end
 
     def mode
-      if @mode.nil? || @mode.empty?
+      if @mode.nil?
         moan(:mode, 'No mode provided')
         return nil
       end
@@ -53,6 +54,30 @@ module ServiceDowntimeSimulator
 
     def mode_klass
       ServiceDowntimeSimulator::Modes.for(mode)
+    end
+
+    def excluded_paths
+      if @excluded_paths.nil?
+        moan(:excluded_paths, 'No excluded paths set. What about your health check endpoint?')
+        return []
+      end
+
+      unless @excluded_paths.is_a?(Array)
+        moan(:excluded_paths, 'Excluded paths must ba an array of paths')
+        return []
+      end
+
+      # Detect if any elements are not a string
+      if @excluded_paths.any? { |el| !el.is_a?(String) }
+        moan(:excluded_paths, 'Excluded paths includes non-string value')
+        return []
+      end
+
+      @excluded_paths
+    end
+
+    def path_excluded?(path)
+      excluded_paths.include?(path)
     end
 
     private
