@@ -1,3 +1,6 @@
+install:
+	bundle install
+
 test:
 	bundle exec rspec
 
@@ -9,4 +12,4 @@ publish:
 lint:
 	bundle exec rubocop
 
-.PHONY: test publish lint
+.PHONY: install test publish lint

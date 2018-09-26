@@ -1,0 +1,16 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.5.1
+    steps:
+      - checkout
+      - run:
+          name: Bundle Is Massive
+          command: make install
+      - run:
+          name: Lint
+          command: make lint
+      - run:
+          name: Test
+          command: make test
