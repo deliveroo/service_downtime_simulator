@@ -20,7 +20,7 @@ module ServiceDowntimeSimulator
       end
 
       def body
-        "Simulated Response (#{identifier})"
+        ["Simulated Response (#{identifier})"]
       end
 
       def status

@@ -8,7 +8,7 @@ module ServiceDowntimeSimulator
       end
 
       def body
-        cheeseboard.shuffle.join(' ')
+        [cheeseboard.shuffle.join(' ')]
       end
 
       def cheeseboard

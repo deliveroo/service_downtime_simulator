@@ -53,7 +53,7 @@ RSpec.describe ServiceDowntimeSimulator::Middleware do
       end
 
       it 'has a body' do
-        expect(body).to match(/^Simulated Response/)
+        expect(body.first).to match(/^Simulated Response/)
       end
     end
   end

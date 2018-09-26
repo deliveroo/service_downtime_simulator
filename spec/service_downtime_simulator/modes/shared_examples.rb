@@ -34,8 +34,12 @@ RSpec.shared_examples_for 'a mode' do
     describe 'third element (body)' do
       let(:body) { response[2] }
 
-      it 'is a string' do
-        expect(body).to be_a(String)
+      it 'is an array' do
+        expect(body).to be_a(Array)
+      end
+
+      it 'contains a string' do
+        expect(body.first).to be_a(String)
       end
     end
   end
