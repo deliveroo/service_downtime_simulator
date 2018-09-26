@@ -83,7 +83,7 @@ config.middleware.use(
   ServiceDowntimeSimulator::Middleware,
   {
     enabled: ENV['FAILURE_SIMULATION_ENABLED'] == 'I_UNDERSTAND_THE_CONSEQUENCES_OF_THIS',
-    mode: ENV['FAILURE_SIMULATION_MODE'],
+    mode: ENV.fetch('FAILURE_SIMULATION_MODE', '').to_sym,
     excluded_paths: ['/health'],
     logger: Rails.logger
   }
