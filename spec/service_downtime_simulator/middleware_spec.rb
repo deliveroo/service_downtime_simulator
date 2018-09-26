@@ -1,43 +1,59 @@
 require 'spec_helper'
 
 RSpec.describe ServiceDowntimeSimulator::Middleware do
-  let(:app) { double }
-  let(:config) { {} }
-  let(:env) { double }
-
-  subject { described_class.new(app, config) }
-
-  describe '#initialize' do
-    it 'returns an instance' do
-      expect(subject).to be_an_instance_of(described_class)
-    end
+  let(:app) { double(mode_klass: double(new: double(call: 'hello!'))) }
+  let(:enabled) { true }
+  let(:excluded_paths) { [] }
+  let(:config) do
+    {
+      enabled: enabled,
+      mode: :hard_down,
+      excluded_paths: excluded_paths
+    }
   end
 
+  subject(:middleware) { described_class.new(app, config) }
+
   describe '#call' do
-    before do
-      allow(ServiceDowntimeSimulator::Config).to receive(:for).and_return(config)
-    end
+    let(:path) { '/' }
+    let(:env) { { 'PATH_INFO' => path } }
 
-    context 'with an activated config' do
-      let(:mode) { double(call: []) }
-      let(:mode_klass) { double(new: mode) }
-      let(:config) { double(activated?: true, mode_klass: mode_klass) }
+    subject { middleware.call(env) }
 
-      it 'runs a downtime simulation' do
-        expect(config).to receive(:mode_klass)
-        expect(mode_klass).to receive(:new)
-        expect(mode).to receive(:call)
+    context 'if not enabled' do
+      let(:enabled) { false }
 
-        subject.call(env)
+      it 'falls through' do
+        expect(app).to receive(:call)
+        subject
       end
     end
 
-    context 'with an non-activated config' do
-      let(:config) { double(activated?: false) }
+    context 'if for a path that is explicitly excluded' do
+      let(:path) { '/excluded' }
+      let(:excluded_paths) { ['/excluded'] }
 
-      it 'routes through to next middleware' do
+      it 'falls through' do
         expect(app).to receive(:call)
-        subject.call(env)
+        subject
+      end
+    end
+
+    context 'otherwise' do
+      let(:status) { subject[0] }
+      let(:headers) { subject[1] }
+      let(:body) { subject[2] }
+
+      it 'has a 500 status code' do
+        expect(status).to eq(500)
+      end
+
+      it 'has headers' do
+        expect(headers).to include('X-SDS-Mode')
+      end
+
+      it 'has a body' do
+        expect(body).to match(/^Simulated Response/)
       end
     end
   end

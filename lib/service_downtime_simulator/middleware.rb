@@ -6,7 +6,7 @@ module ServiceDowntimeSimulator
     end
 
     def call(env)
-      return app.call(env) unless config.activated?
+      return app.call(env) if bypass?(env)
 
       config.mode_klass.new(app).call(env)
     end
@@ -14,5 +14,9 @@ module ServiceDowntimeSimulator
     private
 
     attr_reader :app, :config
+
+    def bypass?(env)
+      !config.activated? || config.path_excluded?(env['PATH_INFO'])
+    end
   end
 end
