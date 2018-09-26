@@ -36,18 +36,18 @@ The middleware takes a `config` argument in the form of a hash. Said hash should
 
 Here's what you can supply for each of those options:
 
-- `enabled` (Boolean)
+- **enabled** (`Boolean`)
   - `true` will enable simulation of failures (assuming you supply a valid `mode`, see below)
   - `false` will disable simulation and your application will function as normal
-- `mode` (Symbol)
+- **mode** (`Symbol`)
   - `:hard_down` will cause all requests to return a 500 error
   - `:intermittently_down` will cause 50% of requests to return a 500 error
   - `:successful_but_gibberish` will return a 200, but with a response body that is not machine readable
   - `:timing_out` will wait for 15 seconds on each request, and then return a 503
-- `excluded_paths` (Array<String>)
+- **excluded_paths** (`Array<String>`)
   - You can supply a list of paths that you don't want to be affected by the simulation here (e.g. `['/foobar']`)
   - The most common thing you're going to want to include here is your service's health check endpoint, as if it is returning a 5xx thanks to this middleware your application will not deploy
-- `logger` (Logger?)
+- **logger** (`Logger?`)
   - If supplied, useful debug information will be sent here
 
 In order for the middleware to kick in, `enabled` must be explicitly set to `true` and `mode` must be a valid option. Unless both are explicitly supplied, the underlying application will continue to function as normal.
