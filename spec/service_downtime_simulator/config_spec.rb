@@ -192,7 +192,7 @@ RSpec.describe ServiceDowntimeSimulator::Config do
     context 'with an invalid path' do
       let(:path) { '/cheese' }
 
-      it { is_expected.to be(false)}
+      it { is_expected.to be(false) }
     end
   end
 end
