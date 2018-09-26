@@ -17,10 +17,6 @@ config.middleware.use(
 )
 ```
 
-### Other Rack-based applications
-
-Instructions TBC.
-
 ## Configuration
 
 The middleware takes a `config` argument in the form of a hash. Said hash should have the following shape:
