@@ -2,6 +2,12 @@
 
 [![CircleCI](https://circleci.com/gh/deliveroo/service_downtime_simulator/tree/master.svg?style=svg&circle-token=d66bc2c0246da5cdf4eeaeb6c9f7b10bcd74bb7b)](https://circleci.com/gh/deliveroo/service_downtime_simulator/tree/master)
 
+---
+
+:rotating_light: If you work at Deliveroo and you're contributing to this project, please bear in mind that this repository is public.
+
+---
+
 This is a piece of Rack middleware that simulates failures you would want to tolerate in upstream services.
 
 ## Installation
