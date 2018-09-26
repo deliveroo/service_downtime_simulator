@@ -29,7 +29,8 @@ The middleware takes a `config` argument in the form of a hash. Said hash should
 {
   enabled: Boolean,
   mode: Symbol,
-  logger: Logger
+  excluded_paths: Array<String>,
+  logger: Logger?
 }
 ```
 
@@ -43,7 +44,10 @@ Here's what you can supply for each of those options:
   - `:intermittently_down` will cause 50% of requests to return a 500 error
   - `:successful_but_gibberish` will return a 200, but with a response body that is not machine readable
   - `:timing_out` will wait for 15 seconds on each request, and then return a 503
-- `logger` (Logger)
+- `excluded_paths` (Array<String>)
+  - You can supply a list of paths that you don't want to be affected by the simulation here (e.g. `['/foobar']`)
+  - The most common thing you're going to want to include here is your service's health check endpoint, as if it is returning a 5xx thanks to this middleware your application will not deploy
+- `logger` (Logger?)
   - If supplied, useful debug information will be sent here
 
 In order for the middleware to kick in, `enabled` must be explicitly set to `true` and `mode` must be a valid option. Unless both are explicitly supplied, the underlying application will continue to function as normal.
@@ -62,6 +66,7 @@ config.middleware.use(
   {
     enabled: true,
     mode: :hard_down,
+    excluded_paths: ['/health'],
     logger: Rails.logger
   }
 )
@@ -77,6 +82,7 @@ config.middleware.use(
   {
     enabled: ENV['FAILURE_SIMULATION_ENABLED'] == 'I_UNDERSTAND_THE_CONSEQUENCES_OF_THIS',
     mode: ENV['FAILURE_SIMULATION_MODE'],
+    excluded_paths: ['/health'],
     logger: Rails.logger
   }
 )
