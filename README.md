@@ -89,3 +89,13 @@ config.middleware.use(
   }
 )
 ```
+
+## Development
+
+- Clone this repository
+- Ensure you have Ruby 2.5.1 installed
+- `make install` to get the dependencies
+- `make test` to run the tests
+- `make lint` to lint your code
+- ???
+- Profit
