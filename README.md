@@ -1,5 +1,7 @@
 # SDS
 
+[![CircleCI](https://circleci.com/gh/deliveroo/service_downtime_simulator/tree/master.svg?style=svg&circle-token=d66bc2c0246da5cdf4eeaeb6c9f7b10bcd74bb7b)](https://circleci.com/gh/deliveroo/service_downtime_simulator/tree/master)
+
 This is a piece of Rack middleware that simulates failures you would want to tolerate in upstream services.
 
 ## Installation
